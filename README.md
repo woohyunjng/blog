@@ -2,6 +2,8 @@
 
 [Zolan](https://github.com/artemsheludko/zolan) 테마를 사용한 Jekyll 블로그입니다.
 
+* * *
+
 ### Deploy
 
 - `bundle install`로 의존성 설치
