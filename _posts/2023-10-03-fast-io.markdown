@@ -1,0 +1,75 @@
+---
+layout: post
+title:  "빠른 입출력"
+date:   2023-10-03 20:56:30 +0900
+tags:   PS
+---
+
+## 빠른 입출력 (Fast I/O)
+
+시간복잡도는 맞췄으나 시간초과가 나는 경우에는 입출력 연산이 너무 많이 실행돼 그런 것일 가능성도 있다.
+
+입출력 연산은 상당히 무거운 연산이기 때문에 입출력을 빠르게 하는 것은 중요하다.
+
+다행히도 여러 언어에서 이를 미리 구현해 놓아 우린 사용하면 된다.
+
+
+### Python
+
+#### 입력
+```python
+## Before
+input()
+
+## After
+from sys import stdin
+stdin.readline().rstrip()
+```
+>
+
+`stdin.readline()`은 한 줄을 통으로, 즉 개행문자까지 받아오기 때문에 다른 타입으로 변환해 주려면 `rstrip()`으로 끝의 개행문자를 제거해 주어야 한다. 
+
+#### 출력
+```python
+## Before
+print()
+
+## After
+from sys import stdout
+stdout.write()
+```
+>
+
+내장된 `print`는 기본적으로 `\n`을 추가해 주기 때문에 속도가 조금 더 느리다.
+
+`\n`은 직접 추가할 수 있으니, 출력량이 많을 땐 `stdout.write()`을 사용해 주는 것이 좋다.
+
+참고로 파이썬에서 여러 변수를 출력해 줄 때 `join`을 써주는 것이 효율적이다.
+
+
+### C++
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+}
+```
+>
+
+C++로 문제를 풀 때 이 코드를 먼저 작성하고 더 추가하면 더 이상 추가적인 작업 없이 훨씬 빠른 `cin`, `cout`가 가능하다.
+
+그리고 `endl` 대신 `\n`을 쓰는 것이 더 빠르다.
+
+이 방법을 쓰면 `printf`, `scanf` 보다 빠른 입출력이 가능하고 이것들과 섞어 쓰면 안 된다.
+
+그리고 싱글 스레드 환경에서만 사용하라는데 실무에서 쓰지 말라는 소리이므로 PS 문제 풀 땐 주의할 점이 아니다.
+
+## 다른 언어
+
+귀찮다.
+Python과 C++만 쓰자.
