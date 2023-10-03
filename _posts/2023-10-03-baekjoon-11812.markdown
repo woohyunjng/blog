@@ -1,0 +1,90 @@
+---
+layout: post
+title:  "백준 11812 K진 트리"
+date:   2023-10-03 21:13:30 +0900
+tags:   PS 문제해결
+---
+
+## 백준 [11812 K진 트리](https://www.acmicpc.net/problem/11812)
+
+각 노드가 자식을 최대 K개 가질 수 있는 트리를 K진 트리라고 한다. 총 N개의 노드로 이루어져 있는 K진 트리가 주어진다.
+
+
+트리는 "적은 에너지" 방법을 이용해서 만든다. "적은 에너지" 방법이란, 이전 깊이를 모두 채운 경우에만, 새로운 깊이를 만드는 것이고, 이 새로운 깊이의 노드는 가장 왼쪽부터 차례대로 추가 한다.
+
+
+노드의 개수 N과 K가 주어졌을 때, 두 노드 x와 y 사이의 거리를 구하는 프로그램을 작성하시오.
+
+-------------
+
+### 개요
+
+2023년 10월 3일 기준 골드3의 문제다.
+
+태그에 `수학`, `트리`, `최소 공통 조상`이 있다.
+
+
+### 풀이
+
+시간복잡도: O($$Q log_K N$$)
+```python
+from sys import stdin
+from math import log, ceil
+
+N, K, Q = map(int, stdin.readline().rstrip().split())
+for i in range(Q):
+    x, y = map(int, stdin.readline().rstrip().split())
+    if K == 1:
+        print(max(x, y) - min(x, y))
+        continue
+
+    depth_x, depth_y = (
+        ceil(log((K - 1) * x + 1, K)) - 1,
+        ceil(log((K - 1) * y + 1, K)) - 1,
+    )
+    if depth_x < depth_y:
+        x, y = y, x
+        depth_x, depth_y = depth_y, depth_x
+
+    res = depth_x - depth_y
+    while depth_x != depth_y:
+        depth_x -= 1
+        x = (x - 2) // K + 1
+
+    while x != y:
+        res += 2
+        x = (x - 2) // K + 1
+        y = (y - 2) // K + 1
+
+    print(res)
+```
+>
+
+N의 범위가 어마어마하지만, 최악의 경우 최대 깊이는 $$log 10^{15}$$ 즉 50밖에 되지 않기 때문에 [LCA]({{ site.baseurl }}/2023/10/03/lowest-common-ancestor/)의 O($$N$$) LCA 방법을 사용해 줄 수 있다.
+
+일단 이 트리를 구현하기는 시간과 공간 소모가 너무 크고 굳이 트리를 구현하지 않아도 수학적 방법을 통해 부모의 숫자와 깊이를 알 수 있기 때문에 전처리는 필요 없다.
+
+루트가 $$0$$층이라고 할때 $$0$$층부터 $$A$$층까지 숫자는 $$1+K+K^2+\cdots+K^{A-1}+K^A=\sum_{i=0}^{A} K^i=\frac{K^{A+1}-1}{K-1}$$이다.
+
+따라서 $$\frac{K^A-1}{K-1}$$와 $$\frac{K^{A+1}-1}{K-1}+1$$ 사이의 숫자 $$x$$는 $$A$$층이라고 할 수 있다.
+
+$$\frac{K^A-1}{K-1}<x<=\frac{K^{A+1}-1}{K-1}$$
+
+$$K^A<(K-1)x+1<=K^{A+1}$$
+
+$$A<log_K ((K-1)x+1)<=A+1$$
+
+$$A=\lceil log_K ((K-1)x+1) \rceil -1$$
+
+결국 $$A$$는 로그 연산을 통해 구해줄 수 있다.
+
+트리의 모든 수에서 $$2$$씩 빼주면 $$i$$($$i>=1$$)층부턴 첫수가 $$3^{i-1}$$다.
+
+그러면 $$x$$의 자식은 $$(x+1)*K\cdots (x+1)*K+K-1$$이다.
+
+그래서 자식 $$x$$가 주어져 있을 때 $$x$$의 부모는 $$\lfloor \frac{x-2}{K} +1 \rfloor$$가 된다.
+
+위 공식들은 모두 $$K>=2$$일때만 성립하므로 $$K=1$$일 땐 예외 처리를 해주어야한다.
+
+필요한 것들은 모두 구했으므로 하나씩 올라가는 LCA를 구현해 주면 된다.
+
