@@ -34,9 +34,9 @@ def pow(A, B, MOD):
 
 -------------
 
-## 2. O($$log N$$) 거듭제곱 (분할 정복)
+## 2. O($$\log{N}$$) 거듭제곱 (분할 정복)
 
-시간복잡도: O($$log N$$)
+시간복잡도: O($$\log{N}$$)
 ```python
 # 제귀함수 이용
 def pow(A, B, MOD):
@@ -64,7 +64,7 @@ def pow(A, B, MOD):
 
 $$A^N=\begin{cases} A^{\frac{N}{2}}\times A^{\frac{N}{2}} & (N\equiv 0 \pmod 2) \\ A^{\frac{N-1}{2}}\times A^{\frac{N-1}{2}}\times A & (N\equiv 1 \pmod 2) \end{cases}$$
 
-지수를 절반씩 쪼개어 주어서 $$log N$$ 안에 거듭제곱을 계산해 주는 것이다.
+지수를 절반씩 쪼개어 주어서 $$\log{N}$$ 안에 거듭제곱을 계산해 주는 것이다.
 
 위 제귀함수 코드는 `top-down` 방식으로 구현한 거듭제곱 함수고 아래 코드는 `bottom-up` 방식으로 구현한 거듭제곱 함수다. (`bottom-up`이 조금 더 빠르다)
 
@@ -72,7 +72,7 @@ $$A^N=\begin{cases} A^{\frac{N}{2}}\times A^{\frac{N}{2}} & (N\equiv 0 \pmod 2) 
 
 #### 1. [1629](https://www.acmicpc.net/problem/1629) 곱셈
 
-시간복잡도: O($$log B$$)
+시간복잡도: O($$\\log{B}$$)
 ```python
 A, B, C = map(int, input().split())
 res = 1
@@ -91,7 +91,7 @@ print(res)
 
 #### 2. [28294](https://www.acmicpc.net/problem/28294) 프랙탈
 
-시간복잡도: O($$log a$$)
+시간복잡도: O($$\\log{a}$$)
 ```python
 MOD = 10**9 + 7
 
@@ -124,11 +124,11 @@ $$g(N,k)=\frac{f(N,k)}{(N-1)^k}=g(N,k-1)+N\times (\frac{N}{N-1})^{k-1}\\=g(N,0)+
 
 $$f(N,k)=N\times (N-1)^k+(N^k-(N-1)^k)\times (N-1)\times N$$
 
-이렇게 일반항을 유도할 수 있고 이 일반항에다가 숫자를 대입해 계산해 주면 되는데 $$a$$의 범위가 너무 크기 때문에 O($$log N$$) 거듭제곱을 이용해 주면 여유롭게 통과할 수 있다.
+이렇게 일반항을 유도할 수 있고 이 일반항에다가 숫자를 대입해 계산해 주면 되는데 $$a$$의 범위가 너무 크기 때문에 O($$\log{N}$$) 거듭제곱을 이용해 주면 여유롭게 통과할 수 있다.
 
 #### 3. [11401](https://www.acmicpc.net/problem/11401) 이항 계수 3
 
-시간복잡도: O($$N+log(10^9+7)$$)
+시간복잡도: O($$N+\log{10^9+7}$$)
 ```python
 N, K = map(int, input().split())
 MOD = 10**9 + 7
@@ -162,4 +162,4 @@ print(num * res % MOD)
 
 $$a$$와 서로소인 소수 $$p$$에 대해서 $$a^{p-1}\equiv 1 \pmod p$$이기 때문에 $$a\times a^{p-2}\equiv 1 \pmod p$$이고 $$a^{p-2}$$가 $$a$$의 역원임을 알 수 있다.
 
-따라서 분자와 분모 값을 팩토리얼을 구하면서 구해주고 분모의 역원 값을 O($$log N$$) 거듭제곱으로 구해준 뒤 곱한 값을 출력해 주면 그것이 이항계수가 된다.
+따라서 분자와 분모 값을 팩토리얼을 구하면서 구해주고 분모의 역원 값을 O($$\log{N}$$) 거듭제곱으로 구해준 뒤 곱한 값을 출력해 주면 그것이 이항계수가 된다.
