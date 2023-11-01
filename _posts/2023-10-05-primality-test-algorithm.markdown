@@ -237,7 +237,7 @@ base = []
 
 def miller_rabin_primality_test(N):
     if not N % 2:
-        return N != 2
+        return N == 2
     
     d, k = N - 1, 0
     while not d % 2:
@@ -259,8 +259,8 @@ def miller_rabin_primality_test(N):
         else:
             break
     else:
-        return False
-    return True
+        return True
+    return False
 ```
 >
 
