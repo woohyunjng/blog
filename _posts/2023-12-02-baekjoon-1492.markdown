@@ -1,0 +1,65 @@
+---
+layout: post
+title:  "백준 1492 합"
+date:   2023-12-02 00:45:30 +0900
+tags:   PS 문제해결
+---
+
+## 백준 [1492 합](https://www.acmicpc.net/problem/1492)
+
+$$N$$과 $$K$$가 주어졌을 때, $$1^K+2^K+3^K+\cdots+N^K$$를 $$1000000007$$로 나눈 나머지를 구하는 프로그램을 작성하시오.
+
+-------------
+
+### 개요
+
+2023년 12월 2일 기준 플래티넘2의 문제다.
+
+태그에 `수학`, `DP`, `정수론`, `조합론`, `분할 정복을 이용한 거듭제곱`, `모듈로 곱셈 역원`이 있다.
+
+
+### 풀이
+
+```python
+from math import comb
+
+MOD = 10**9 + 7
+
+
+def pow(A, B):
+    res = 1
+    while B:
+        if B % 2:
+            res = res * A % MOD
+        B >>= 1
+        A = A**2 % MOD
+    return res
+
+
+N, K = map(int, input().split())
+arr = [N]
+
+for i in range(1, K + 1):
+    val = pow(N + 1, i + 1) - 1
+    for j in range(i):
+        val -= comb(i + 1, j) * arr[j] % MOD
+    arr.append(val * pow(i + 1, MOD - 2) % MOD)
+
+print(arr[-1])
+
+```
+>
+
+O($$N$$)의 시간복잡도여도 시간 초과가 발생하기 때문에 공식을 유도해야 한다.
+
+$$f(K)=1^K+2^K+3^K+\cdots+N^K$$라고 정의하자.
+
+$$(N+1)^{K+1}-N^{K+1}=(K+1)N^K+\displaystyle \sum_{i=0}^{i=K-1} \begin{pmatrix}K+1\\i\\ \end{pmatrix}N^i$$라고 표현할 수 있다.
+
+그래서 $$\displaystyle \sum_{i=1}^{i=N} ((i+1)^{K+1}-i^{K+1})$$을 해주면 $$(N+1)^{K+1}-1$$인 동시에 $$(K+1)f(K)+\displaystyle \sum_{i=0}^{i=K-1} \begin{pmatrix}K+1\\i\\ \end{pmatrix}f(i)$$이다.
+
+이것을 이용해 계산해 주면 $$f(1),f(2),\cdots,f(K)$$ 순서대로 모두 구해줄 수 있다.
+
+나누기를 위한 역원을 구하는 과정에서 큰 수 거듭제곱이 필요하기 때문에 개선된 O($$log N$$) 거듭제곱을 이용해 준다.
+
+위 코드에서 조합을 구하는 부분을 살짝 개선해 주면 [25974](https://www.acmicpc.net/problem/25974) 문제를 풀 수도 있다.
