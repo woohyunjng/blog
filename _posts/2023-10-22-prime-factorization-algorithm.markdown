@@ -1,19 +1,20 @@
 ---
 layout: post
-title:  "소인수분해 알고리즘"
-date:   2023-10-22 09:16:30 +0900
-tags:   PS 알고리즘
+title: "소인수분해 알고리즘"
+date: 2023-10-22 09:16:30 +0900
+tags: PS 알고리즘
 ---
 
 ## 소인수분해란?
 
 어떤 자연수를 소인수들만의 곱으로 나타내는 것을 의미한다.
 
--------------
+---
 
 ## 1. O($$\sqrt{N}$$) 제곱근까지 확인
 
 시간복잡도: O($$\sqrt{N}$$)
+
 ```python
 def factorization(N):
     arr = []
@@ -26,8 +27,9 @@ def factorization(N):
     if N > 1:
         arr.append(N)
     return arr
-```   
-> 
+```
+
+>
 
 $$i\times j=N$$일때 하나는 $$\sqrt{N}$$ 이상이고 하나는 이하이기 때문에 $$\sqrt{N}$$ 까지 수들로 나누어주면서 나누어떨어지면 소인수 배열에 추가시킨다.
 
@@ -38,6 +40,7 @@ $$i\times j=N$$일때 하나는 $$\sqrt{N}$$ 이상이고 하나는 이하이기
 #### 1. [11653](https://www.acmicpc.net/problem/11653) 소인수분해
 
 시간복잡도: O($$\sqrt{N}$$)
+
 ```python
 N = int(input())
 arr = []
@@ -51,7 +54,8 @@ if N > 1:
     arr.append(N)
 print("\n".join(map(str, arr)))
 ```
-> 
+
+>
 
 소인수분해 예제 문제.
 
@@ -69,11 +73,13 @@ while N > 1:
         N //= i
     i += 1
 ```
-> 
+
+>
 
 #### 2. [11689](https://www.acmicpc.net/problem/11689) GCD(n, k) = 1
 
 시간복잡도: O($$\sqrt{N}$$)
+
 ```python
 N = int(input())
 res = N
@@ -93,7 +99,8 @@ if N != 1:
 
 print(res)
 ```
-> 
+
+>
 
 매우 유명한 오일러 파이 함수를 이용해 주는 문제이다.
 
@@ -105,12 +112,12 @@ $$φ(N)$$은 $$N$$ 이하 수 중 $$N$$과 서로소인 수들의 개수를 구�
 
 이 둘을 조합하면 결국 오일러 파이 함수는 $$φ(N)=N\displaystyle \prod_{p\\|N} {(1-\frac{1}{p})}$$이다.
 
-
--------------
+---
 
 ## 2. 오일러의 체
 
 시간복잡도: O($$N \log{\log{N}}$$)
+
 ```python
 prime = [i for i in range(N + 1)]
 prime[0], prime[1] = 0, 1
@@ -126,6 +133,7 @@ while N > 1:
     arr.append(prime[N])
     N //= prime[N]
 ```
+
 >
 
 이 알고리즘은 에라토스테네스의 체 알고리즘을 확장한 알고리즘인데 기존 에라토스테네스의 체가 $$prime[i]$$에 $$i$$가 소수인지 아닌지만 저장했다면 이 알고리즘은 $$prime[i]$$의 최소 소인수를 저장한다.
@@ -139,6 +147,7 @@ while N > 1:
 #### 1. [16563](https://www.acmicpc.net/problem/16563) 어려운 소인수분해
 
 시간복잡도: O($$mx \log{\log{mx}}+N\log{mx}$$)
+
 ```python
 N = int(input())
 k = list(map(int, input().split()))
@@ -159,16 +168,17 @@ for i in k:
         i //= prime[i]
     print()
 ```
-> 
+
+>
 
 여러 개의 숫자가 주어지기 때문에 오일러의 체를 이용해 준다.
 
-
--------------
+---
 
 ## 3. 폴라드 로 알고리즘
 
 시간복잡도: O($$\sqrt[4]{N}$$)
+
 ```python
 from random import randint
 from math import gcd
@@ -207,6 +217,7 @@ def factorization(N):
         N //= arr[-1]
     return list(sorted(arr))
 ```
+
 >
 
 폴라드로 알고리즘은 아마도 O($$\sqrt[4]{N}$$)의 시간복잡도를 갖는 소인수분해 알고리즘이다.
@@ -228,6 +239,7 @@ def factorization(N):
 #### 1. [4149](https://www.acmicpc.net/problem/4149) 큰 수 소인수분해
 
 시간복잡도: O($$\sqrt[4]{N}$$)
+
 ```python
 from random import randint
 from math import gcd
@@ -307,13 +319,15 @@ while N > 1:
 
 print(*sorted(arr), sep="\n")
 ```
-> 
+
+>
 
 기본적인 폴라드 로 소인수분해 문제이다.
 
 #### 2. [13926](https://www.acmicpc.net/problem/13926) gcd(n, k) = 1
 
 시간복잡도: O($$\sqrt[4]{N}$$)
+
 ```python
 from random import randint
 from math import gcd
@@ -402,13 +416,15 @@ for i in arr:
 
 print(N)
 ```
-> 
+
+>
 
 [11689](https://www.acmicpc.net/problem/11689) 문제를 폴라드로를 이용해서 풀어주면 된다.
 
 #### 3. [5647](https://www.acmicpc.net/problem/5647) 연속 합
 
 시간복잡도: O($$\sqrt[4]{N}$$)
+
 ```python
 from random import randint
 from math import gcd
@@ -503,7 +519,8 @@ while True:
 
     print(res)
 ```
-> 
+
+>
 
 $$q$$개의 수 중 처음 수를 $$m$$이라 두었을 때 조건에 의해 $$m+\cdots+(m+q-1)=(m-1)+\cdots+(m-p)$$이다.
 
@@ -524,4 +541,3 @@ $$m$$은 정수이므로 $$\alpha, \beta$$의 기우성은 다르다. 이 $$m$$ 
 $$q=2^a\times b$$ ($$b$$는 홀수)라 뒀을 때 $$\alpha \times \beta=2q^2$$이고 $$\alpha$$와 $$\beta$$의 기우성은 다르므로 순서쌍의 개수는 $$b^2$$의 약수의 개수 곱하기 $$2$$이다.
 
 그래서 $$q$$를 소인수분해 한 뒤 $$b$$를 구해 그 제곱의 약수 개수 곱하기 $$2$$를 구해주면 된다.
-

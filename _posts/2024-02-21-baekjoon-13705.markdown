@@ -1,0 +1,92 @@
+---
+layout: post
+title: "백준 13705 Ax+Bsin(x)=C"
+date: 2024-02-21 00:45:30 +0900
+tags: PS 문제해결
+---
+
+## 백준 [13705 Ax+Bsin(x)=C](https://www.acmicpc.net/problem/13705)
+
+$$A$$, $$B$$, $$C$$가 주어졌을 때, $$Ax+Bsin(x)=C$$를 만족하는 $$x$$를 찾는 프로그램을 작성하시오.
+
+---
+
+### 개요
+
+2024년 2월 21일 기준 다이아5의 문제다.
+
+태그에 `수학`, `이분 탐색`, `임의 정밀도 / 큰 수 연산`, `수치해석`이 있다.
+
+### 풀이
+
+```python
+from decimal import Decimal, getcontext, ROUND_HALF_UP
+from math import floor, sin
+
+
+def pi():
+    getcontext().prec += 2  # extra digits for intermediate steps
+    three = Decimal(3)  # substitute "three=3.0" for regular floats
+    lasts, t, s, n, na, d, da = 0, three, 3, 1, 0, 0, 24
+    while s != lasts:
+        lasts = s
+        n, na = n + na, na + 8
+        d, da = d + da, da + 32
+        t = (t * n) / d
+        s += t
+    getcontext().prec -= 2
+    return +s
+
+
+def sin(x):
+    getcontext().prec += 2
+    i, lasts, s, fact, num, sign = 1, 0, x, 1, x, 1
+    while s != lasts:
+        lasts = s
+        i += 2
+        fact *= i * (i - 1)
+        num *= x * x
+        sign *= -1
+        s += num / fact * sign
+    getcontext().prec -= 2
+    return +s
+
+
+getcontext().prec = 200
+getcontext().rounding = ROUND_HALF_UP
+
+A, B, C = map(Decimal, input().split())
+p = pi()
+
+n = (-B + C) / (2 * p * A) - Decimal(1) / Decimal(2)
+if n % 1 == 0:
+    n -= 1
+else:
+    n = floor(n)
+
+st, en = (2 * (n - 2) - 1) * p, (2 * (n + 2) + 1) * p
+while abs(st - en) >= 10 ** (-70):
+    mid = (st + en) / Decimal(2)
+    val = A * mid + B * sin(Decimal(mid % (2 * p))) - C
+    if val >= 0:
+        en = mid
+    else:
+        st = mid
+
+print(round((st + en) / Decimal(2), 6))
+
+```
+
+>
+
+$$f(x)=Ax+Bsin(x)-C$$로 두었을때 이의 도함수는 $$f'(x)=A+Bcos(x)$$로 나타내 줄 수 있다.
+
+$$cos(x)$$의 치역은 $$[-1, 1]$$이므로 $$f'(x)$$의 치역은 $$[A-B,A+B]$$인데 조건에서 $$A\ge B$$라고 주어졌기 때문에 항상 $$f'(x)\ge 0$$이고 $$f(x)$$는 증가함수다.
+
+$$x$$를 구간 $$[2n\pi-\pi,2n\pi+\pi]$$에 포함된다고 했을 때 $$f(x)$$는 $$A(2n\pi-\pi)-B-C$$에서 $$A(2n\pi+\pi)+B-C$$로 증가한다. 따라서 $$f(x)=0$$인 $$x$$가 존재하려면 사잇값의 정리에 의해 $$A(2n\pi-\pi)-B-C\le 0$$, $$A(2n\pi+\pi)+B-C\ge 0$$이여야 한다.
+
+이를 정리해 주면 $$\dfrac{-B+C}{2\pi A}-\dfrac{1}{2}\le n \le \dfrac{B+C}{2\pi A}+\dfrac{1}{2}$$가 나오고 이를 만족하는 $$n$$은 하나만 존재하게 된다.
+
+그러면 정해진 구간 내에서 이분 탐색으로 만족하는 $$x$$값을 찾아준다.
+
+정확한 소수 계산을 위해 파이와 $$sin$$을 직접 구현해 주고 `Decimal` 라이브러리를 이용해 준다.

@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "거듭제곱 알고리즘"
-date:   2023-10-05 01:08:30 +0900
-tags:   PS 알고리즘
+title: "거듭제곱 알고리즘"
+date: 2023-10-05 01:08:30 +0900
+tags: PS 알고리즘
 ---
 
 ## 거듭제곱 알고리즘
@@ -13,30 +13,32 @@ PS 문제를 풀 때 거듭제곱이 필요한 경우는 많다.
 
 대표적으로 선형점화식의 일반항이 거듭제곱 형태로 나왔을 때 N 번째 항을 구할 때 쓰이고 (피보나치수열) 이항 계수를 구할 때도, 소인수분해를 할 때도 쓰인다.
 
--------------
+---
 
 ## 1. O($$N$$) 거듭제곱
 
 시간복잡도: O($$N$$)
+
 ```python
 def pow(A, B, MOD):
     res = 1
     for i in range(B):
         res = res * A % MOD
     return res
-```   
-> 
+```
+
+>
 
 설명이 필요 없다. 그냥 밑을 지수만큼 곱했다.
 
 다만 대부분 문제에선 저 $$B$$가 크기 때문에 이 알고리즘으로는 시간초과가 나기 쉽다.
 
-
--------------
+---
 
 ## 2. O($$\log{N}$$) 거듭제곱 (분할 정복)
 
 시간복잡도: O($$\log{N}$$)
+
 ```python
 # 제귀함수 이용
 def pow(A, B, MOD):
@@ -58,6 +60,7 @@ def pow(A, B, MOD):
         A = A ** 2 % MOD
     return res
 ```
+
 >
 
 핵심 아이디어는 분할정복을 이용한 아이디어인데 다음과 같다.
@@ -73,6 +76,7 @@ $$A^N=\begin{cases} A^{\frac{N}{2}}\times A^{\frac{N}{2}} & (N\equiv 0 \pmod 2) 
 #### 1. [1629](https://www.acmicpc.net/problem/1629) 곱셈
 
 시간복잡도: O($$\\log{B}$$)
+
 ```python
 A, B, C = map(int, input().split())
 res = 1
@@ -85,13 +89,15 @@ while B:
 
 print(res)
 ```
-> 
+
+>
 
 기본 문제.
 
 #### 2. [28294](https://www.acmicpc.net/problem/28294) 프랙탈
 
 시간복잡도: O($$\\log{a}$$)
+
 ```python
 MOD = 10**9 + 7
 
@@ -110,7 +116,8 @@ N, a = map(int, input().split())
 X, Y = pow(N, a), pow(N - 1, a)
 print((N * Y + (X - Y) * (N - 1) * N) % MOD)
 ```
-> 
+
+>
 
 N값이 크기 때문에 일반항을 찾아주어야 한다.
 
@@ -129,6 +136,7 @@ $$f(N,k)=N\times (N-1)^k+(N^k-(N-1)^k)\times (N-1)\times N$$
 #### 3. [11401](https://www.acmicpc.net/problem/11401) 이항 계수 3
 
 시간복잡도: O($$N+\log{10^9+7}$$)
+
 ```python
 N, K = map(int, input().split())
 MOD = 10**9 + 7
@@ -148,7 +156,8 @@ while A:
 
 print(num * res % MOD)
 ```
-> 
+
+>
 
 그냥 계산 후 나누기하면 되는데 왜 그러지 않고 역원을 곱해주는지 이해가 가지 않을 수도 있다.
 

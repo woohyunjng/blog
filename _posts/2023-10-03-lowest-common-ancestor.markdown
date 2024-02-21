@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "최소 공통 조상(LCA) 알고리즘"
-date:   2023-10-03 01:58:30 +0900
-tags:   PS 알고리즘
+title: "최소 공통 조상(LCA) 알고리즘"
+date: 2023-10-03 01:58:30 +0900
+tags: PS 알고리즘
 ---
 
 ## 최소 공통 조상(LCA)이란?
@@ -15,11 +15,12 @@ tags:   PS 알고리즘
 
 두 노드의 최소 공통 조상을 구하기 위해선 트리를 타고 올라가서 처음으로 만나는 노드를 찾으면 되는데 그 방법엔 여러 가지가 있다.
 
--------------
+---
 
 ## 1. O($$N$$) LCA(선형 탐색)
 
 시간복잡도: O($$N$$)
+
 ```python
 def LCA(parent, A, B):
     depth_A, depth_B = 0, 0
@@ -33,20 +34,21 @@ def LCA(parent, A, B):
     while parent[X]:
         X = parent[X]
         depth_B += 1
-    
+
     if depth_B > depth_A:
         depth_A, depth_B = depth_B, depth_A
         A, B = B, A
-    
+
     for i in range(depth_A - depth_B):
         A = parent[A]
-    
+
     while A != B:
         A, B = parent[A], parent[B]
-    
+
     return A
-```   
-> 
+```
+
+>
 
 처음에 두 노드의 연결 상태와 루트가 주어졌을 때 $$A$$, $$B$$를 같은 높이로 맞춰준다.
 
@@ -59,6 +61,7 @@ def LCA(parent, A, B):
 #### 1. [3584](https://www.acmicpc.net/problem/3584) 가장 가까운 공통 조상
 
 시간복잡도: O($$TN$$ )
+
 ```python
 T = int(input())
 for i in range(T):
@@ -94,13 +97,15 @@ for i in range(T):
 
     print(A)
 ```
-> 
+
+>
 
 친절하게 트리에서 부모 자녀 관계가 주어지고 $$N$$의 범위가 그렇게 크진 않기 때문에 O($$N$$)으로 LCA를 구해줄 수 있다.
 
 #### 2. [11437](https://www.acmicpc.net/problem/11437) LCA
 
 시간복잡도: O($$NM$$ )
+
 ```python
 from collections import deque
 
@@ -144,18 +149,19 @@ for i in range(M):
 
     print(A)
 ```
-> 
+
+>
 
 [3584](https://www.acmicpc.net/problem/3584)과 달리 입력이 트리 형태로 주어지지 않아 `DFS`로 트리로 바꿔주는 과정이 필요하다.
 
-
--------------
+---
 
 ## 2. O($$log N$$) LCA(희소 배열 이용)
 
 전처리 시간복잡도: O($$N log N$$)
 
 쿼리 시간복잡도: O($$log N$$)
+
 >
 
 코드는 전처리 과정 때문에 함수로 만들기 귀찮아 아래 [11438](https://www.acmicpc.net/problem/11438) 코드를 보면 된다.
@@ -177,6 +183,7 @@ $$2^k=2^{k-1}+2^{k-1}$$이기 때문에 $$parent[A][B]=parent[parent[A][B-1]][B-
 #### 1. [11438](https://www.acmicpc.net/problem/11438) LCA 2
 
 시간복잡도: O($$N log N+M (log N)^2$$)
+
 ```python
 from sys import stdin
 from collections import deque
@@ -235,7 +242,8 @@ for i in range(M):
 
     print(A)
 ```
-> 
+
+>
 
 O($$log N$$) LCA의 기본문제다.
 
@@ -248,6 +256,7 @@ O($$log N$$) LCA의 기본문제다.
 #### 2. [1761](https://www.acmicpc.net/problem/1761) 정점들의 거리
 
 시간복잡도: O($$N log N+M (log N)^2$$)
+
 ```python
 from sys import stdin
 from collections import deque
@@ -309,7 +318,8 @@ for i in range(M):
 
     print(res - length[A] * 2)
 ```
-> 
+
+>
 
 [11438](https://www.acmicpc.net/problem/11438) 문제에다가 루트 노드에서 $$A$$번 노드까지 거리를 저장하는 $$length[A]$$ 배열을 추가해주면 된다.
 
@@ -318,6 +328,7 @@ $$A$$번 노드와 $$B$$번 노드의 LCA를 $$X$$번 노드라고 했을때 $$A
 #### 3. [13511](https://www.acmicpc.net/problem/13511) 트리와 쿼리 2
 
 시간복잡도: O($$N log N+M (log N)^2$$)
+
 ```python
 from sys import stdin
 from collections import deque
@@ -394,7 +405,8 @@ for i in range(M):
 
         print(X)
 ```
-> 
+
+>
 
 O($$log N$$) LCA를 구하기 위해 만들어준 $$parent$$ 배열을 이용해주면 되는 문제다.
 
@@ -403,6 +415,7 @@ O($$log N$$) LCA를 구하기 위해 만들어준 $$parent$$ 배열을 이용해
 #### 4. [15480](https://www.acmicpc.net/problem/15480) LCA와 쿼리
 
 시간복잡도: O($$N log N+M (log N)^2$$)
+
 ```python
 from sys import stdin
 from collections import deque
@@ -473,7 +486,8 @@ for i in range(M):
     else:
         print(C)
 ```
-> 
+
+>
 
 매번 루트 노드가 바뀐다고 쿼리마다 전처리 과정을 반복하는 것이 아니라 추가적인 관찰을 해야 한다.
 
@@ -489,16 +503,14 @@ $$A$$를 $$r$$, $$u$$의 LCA, $$B$$를 $$r$$, $$v$$의 LCA, $$C$$를 $$u$$, $$v$
 
 결국 답은 $$A$$, $$B$$, $$C$$ 중 가장 깊은 노드라고 일반화시킬 수 있다.
 
+---
 
-
-
--------------
-
-## 3. O($$1$$) LCA(ETT, RMQ  이용)
+## 3. O($$1$$) LCA(ETT, RMQ 이용)
 
 전처리 시간복잡도: O($$N log N$$)
 
 쿼리 시간복잡도: O($$1$$)
+
 >
 
 오일러 경로 테크닉과 희소 배열, 세그먼트 트리를 잘 사용해 주면 O($$1$$) LCA가 가능하다는데 공부하고 작성할 것이다.

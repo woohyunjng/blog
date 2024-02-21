@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "최장 증가 부분 수열(LIS) 알고리즘"
-date:   2023-09-29 01:14:55 +0900
-tags:   PS 알고리즘
+title: "최장 증가 부분 수열(LIS) 알고리즘"
+date: 2023-09-29 01:14:55 +0900
+tags: PS 알고리즘
 ---
 
 ## 최장 증가 부분 수열(LIS)이란?
@@ -13,11 +13,12 @@ tags:   PS 알고리즘
 
 [나무위키 설명](https://namu.wiki/w/최장%20증가%20부분%20수열)
 
--------------
+---
 
 ## 1. 다이나믹 프로그래밍 (DP)
 
 시간복잡도: O($$N^2$$)
+
 ```python
 def LIS(arr):
     dp = [1 for i in range(len(arr))]
@@ -26,8 +27,9 @@ def LIS(arr):
             if arr[j] < arr[i]:
                 dp[i] = max(dp[i], dp[j] + 1)
     return max(dp)
-```   
-> 
+```
+
+>
 
 $$dp[i]$$를 $$i$$번째 인덱스에서 끝나는 LIS의 길이라고 정의했을 때 위처럼 코드를 짤 수 있다.
 
@@ -40,6 +42,7 @@ $$dp[i]$$를 $$i$$번째 인덱스에서 끝나는 LIS의 길이라고 정의했
 #### 1. [11053](https://www.acmicpc.net/problem/11053) 가장 긴 증가하는 부분 수열
 
 시간복잡도: O($$N^2$$)
+
 ```python
 N = int(input())
 arr = list(map(int, input().split()))
@@ -52,13 +55,15 @@ for i in range(N):
 
 print(max(dp))
 ```
-> 
+
+>
 
 이름 그대로 LIS의 길이를 구하는 문제인데 $$N$$의 범위가 작기 때문에 O( $$N^2$$ ) DP로도 충분히 해결할 수 있다.
 
 #### 2. [11054](https://www.acmicpc.net/problem/11054) 가장 긴 바이토닉 부분 수열
 
 시간복잡도: O($$N^2$$)
+
 ```python
 N = int(input())
 arr = list(map(int, input().split()))
@@ -82,13 +87,15 @@ for i in range(N):
 
 print(mx)
 ```
-> 
+
+>
 
 배열이 그대로일 때와 뒤집었을 때 LIS DP 배열을 각각 구해줘서 나중에 합친 것의 최댓값을 계산해 주면 된다.
 
 #### 3. [2565](https://www.acmicpc.net/problem/2565) 전깃줄
 
 시간복잡도: O($$N^2$$)
+
 ```python
 N = int(input())
 arr = []
@@ -105,7 +112,8 @@ for i in range(N):
 
 print(N - max(dp))
 ```
-> 
+
+>
 
 전봇대 A를 기준으로 정렬한 뒤 연결되는 전봇대 B의 위치를 배열로 저장한다.
 
@@ -118,6 +126,7 @@ print(N - max(dp))
 #### 4. [14002](https://www.acmicpc.net/problem/14002) 가장 긴 증가하는 부분 수열 4
 
 시간복잡도: O($$N^2$$)
+
 ```python
 N = int(input())
 arr = list(map(int, input().split()))
@@ -140,7 +149,8 @@ for i in range(N - 1, -1, -1):
 
 print(*reversed(res))
 ```
-> 
+
+>
 
 [11053](https://www.acmicpc.net/problem/11053) 문제에서 한 그대로 LIS DP 배열을 구해준다.
 
@@ -148,12 +158,12 @@ DP 배열에서 최대 값을 찾아주고 거꾸로 DP 배열과 arr 배열을 
 
 그리고 최종적으로 LIS 배열을 뒤집은채로 출력해준다.
 
-
--------------
+---
 
 ## 2. 이분 탐색
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from bisect import bisect_left
 
@@ -166,6 +176,7 @@ def LIS(arr):
             X[bisect_left(X, i)] = i
     return len(X)
 ```
+
 >
 
 O ( $$log N$$ )의 시간복잡도를 가진 이분탐색을 이용하면 훨씬 효율적으로 LIS를 구해줄 수 있다.
@@ -183,6 +194,7 @@ LIS를 만들기 위해서 LIS의 마지막 원소가 작을수록 좋다.
 #### 1. [12015](https://www.acmicpc.net/problem/12015) 가장 긴 증가하는 부분 수열 2
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from bisect import bisect_left
 
@@ -199,13 +211,15 @@ for i in arr:
 
 print(res)
 ```
-> 
+
+>
 
 O( $$N^2$$ ) DP로는 시간초과가 나기 때문에 O( $$N log N$$ ) 방법으로 풀어줘야 한다.
 
 #### 2. [1818](https://www.acmicpc.net/problem/1818) 책정리
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from bisect import bisect_left
 
@@ -222,13 +236,15 @@ for i in arr:
 
 print(N - res)
 ```
-> 
+
+>
 
 배열에서 LIS를 찾고 그것을 고정해 두고 다른 값들을 이동시켜 주면 최소 횟수로 정렬된 배열을 만들어 줄 수 있다.
 
 #### 3. [14003](https://www.acmicpc.net/problem/14003) 가장 긴 증가하는 부분 수열 5
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from bisect import bisect_left
 
@@ -254,7 +270,8 @@ for i in range(N - 1, -1, -1):
 print(len(res))
 print(*reversed(res))
 ```
-> 
+
+>
 
 [12015](https://www.acmicpc.net/problem/12015) 문제처럼 X 배열을 채워주면서 Y 배열에는 삽입될 위치를 넣어준다.
 
@@ -265,6 +282,7 @@ print(*reversed(res))
 #### 4. [2568](https://www.acmicpc.net/problem/2568) 전깃줄 - 2
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from bisect import bisect_left
 
@@ -295,18 +313,19 @@ for i in range(N - 1, -1, -1):
 print(len(res))
 print("\n".join(map(str, reversed(res))))
 ```
-> 
+
+>
 
 [2565](https://www.acmicpc.net/problem/2565)의 아이디어를 그대로 사용해 주면 된다.
 
 N의 범위가 크고 LIS를 실제로 구해야 하므로 [14003](https://www.acmicpc.net/problem/14003)에서 살짝만 수정해 주면 된다.
 
-
--------------
+---
 
 ## 3. 세그먼트 트리
 
 시간복잡도: O($$N log N$$) (다만 이분 탐색을 이용한 방법보다는 느리다)
+
 ```python
 def query(tree, node, start, end, left, right):
     if end < left or right < start:
@@ -347,6 +366,7 @@ def LIS(arr):
         update(tree, 1, 0, len(arr) - 1, arr[i][1], mx + 1)
     return tree[1]
 ```
+
 >
 
 최댓값 세그먼트 트리를 활용하여 LIS를 O( $$N log N$$ )의 시간복잡도로 구해줄 수 있다.
@@ -370,6 +390,7 @@ LIS의 크기는 최댓값 세그먼트 트리로 관리해 주면 되기 때문
 #### 1. [12738](https://www.acmicpc.net/problem/12738) 가장 긴 증가하는 부분 수열 3
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from sys import stdin
 
@@ -414,13 +435,15 @@ for i in range(N):
 
 print(tree[1])
 ```
-> 
+
+>
 
 이분 탐색으로 푸는것이 효율적이나 연습을 위해 세그먼트 트리로 풀었다.
 
 #### 2. [17411](https://www.acmicpc.net/problem/17411) 가장 긴 증가하는 부분 수열 6
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from sys import stdin
 
@@ -475,7 +498,8 @@ for i in range(N):
 
 print(*tree[1])
 ```
-> 
+
+>
 
 LIS의 개수까지 구해주어야 하기 때문에 길이랑 LIS 하나만 구해줄 수 있는 이분 탐색으로 풀기는 적절하지 않고 세그먼트 트리로 풀면 해결할 수 있다.
 
@@ -488,6 +512,7 @@ LIS의 개수까지 구해주어야 하기 때문에 길이랑 LIS 하나만 구
 #### 3. [3133](https://www.acmicpc.net/problem/3133) 코끼리
 
 시간복잡도: O($$N log N$$)
+
 ```python
 from sys import stdin
 
@@ -547,7 +572,8 @@ for i in range(N):
 print(tree[1][0])
 print(tree[1][1])
 ```
-> 
+
+>
 
 [17411](https://www.acmicpc.net/problem/17411)을 응용한 문제지만 이 코드는 시간초과가 아니라 통과다.
 
