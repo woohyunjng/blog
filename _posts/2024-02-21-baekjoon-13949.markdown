@@ -1,0 +1,72 @@
+---
+layout: post
+title: "백준 13949 쉬운 문제"
+date: 2024-02-21 12:45:30 +0900
+tags: PS 문제해결
+---
+
+## 백준 [13949 쉬운 문제](https://www.acmicpc.net/problem/13949)
+
+$$1$$보다 큰 정수 $$k$$가 주어졌을때, 다음 식을 만족하는 양의 정수 $$(a,b,c)$$는 무수히 많다는 것을 증명할 수 있다:
+
+$$a^2+b^2+c^2=k(ab+bc+ca)+1$$
+
+양의 정수 n과 k가 주어졌을때 위 식을 만족하는 임의 n개의$$(a_1,b_1,c_1),(a_2,b_2,c_2),\cdots,(a_n,b_n,c_n)$$ 를 찾아라. $$a_1,\cdots,a_n,b_1,\cdots,b_n,c_1,\cdots,c_n$$은 서로 다른 양의 정수이고, 최대 100자리 수이다.
+
+---
+
+### 개요
+
+2024년 2월 21일 기준 다이아3의 문제다.
+
+태그에 `수학`, `그래프 이론`, `그래프 탐색`, `정수론`, `너비 우선 탐색`, `임의 정밀도 / 큰 수 연산`이 있다.
+
+### 풀이
+
+```python
+from collections import defaultdict, deque
+
+K, N = map(int, input().split())
+checked = defaultdict(bool)
+
+arr = deque([(0, 1, K)])
+res = []
+
+while len(res) < N:
+    a = arr.popleft()
+    pos = [
+        (K * (a[1] + a[2]) - a[0], a[1], a[2]),
+        (a[0], K * (a[0] + a[2]) - a[1], a[2]),
+        (a[0], a[1], K * (a[0] + a[1]) - a[2]),
+    ]
+
+    for i, j, k in pos:
+        if i <= 0 or j <= 0 or k <= 0:
+            continue
+
+        arr.append((i, j, k))
+        if not checked[i] and not checked[j] and not checked[k]:
+            checked[i], checked[j], checked[k] = True, True, True
+            res.append((i, j, k))
+
+for i, j, k in res:
+    print(i, j, k)
+
+
+```
+
+>
+
+$$(0,1,k)$$는 식을 만족하지만 조건은 만족시키지 못하는 하나의 순서쌍이다.
+
+$$b,c$$를 상수로 두고 $$a$$에 대한 방정식으로 만들어준다.
+
+$$a^2-k(b+c)a+b^2+c^2-kbc+1=0$$
+
+이에 대한 근을 $$\alpha,\beta$$라 하면 $$\alpha + \beta=k(b+c)$$임을 알 수 있다.
+
+따라서 $$(a,b,c)$$라는 근이 나왔을때 $$(k(b+c)-a,b,c)$$도 근임을 이용해주자.
+
+같은 원리로 $$(a,b,c)$$라는 근이 나왔을때 $$(a,k(c+a)-b,c),(a,b,k(a+b)-c)$$도 근이다.
+
+그래서 처음에 구한 순서쌍으로 `BFS`를 진행시켜준다.
